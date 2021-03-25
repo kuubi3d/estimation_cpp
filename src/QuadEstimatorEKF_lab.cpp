@@ -5,6 +5,7 @@
 #include "Math/Quaternion.h"
 
 #include <vector>
+#include <iostream>
 
 using namespace SLR;
 
@@ -96,7 +97,23 @@ void QuadEstimatorEKF::UpdateFromIMU(V3F accel, V3F gyro)
   // make sure you comment it out when you add your own code -- otherwise e.g. you might integrate yaw twice
 
 
-// ~
+/* ~ Udacity C++ Vectors and Iterators
+
+int main ()
+{
+  //creating a vector of integers
+  std::vector<int> vectorInts;  
+  std::cout<<"vectorInts has "<<vectorInts.size()<<" elements\n";
+  
+  //Changing the size of vectorInts to 6
+  vectorInts.resize(6);
+  std::cout<<"\n\nvectorInts now has "<<vectorInts.size()<<" elements\n";
+ 
+  return 0;
+}
+
+*/
+
 /**
  * @file ekf.cpp
  * Core functions for ekf attitude and position estimator.
@@ -181,7 +198,25 @@ void Ekf::predictState()
 
 }
 
-// ~
+  // ~
+  // ~ from DQNdrone AirSim 
+
+  /*
+  * Predict the previous quaternion output state forward using the latest IMU delta angle data.
+  */
+Quatf Ekf::calculate_quaternion() const
+{
+	// Correct delta angle data for bias errors using bias state estimates from the EKF and also apply
+	// corrections required to track the EKF quaternion states
+	const Vector3f delta_angle{_newest_high_rate_imu_sample.delta_ang - _state.delta_ang_bias * (_dt_imu_avg / _dt_ekf_avg) + _delta_angle_corr};
+
+	// increment the quaternions using the corrected delta angle vector
+	// the quaternions must always be normalised after modification
+	return Quatf{_output_new.quat_nominal * AxisAnglef{delta_angle}}.unit();
+}
+
+  // ~
+
 
   float predictedPitch = pitchEst + dtIMU * gyro.y;
   float predictedRoll = rollEst + dtIMU * gyro.x;
@@ -190,6 +225,10 @@ void Ekf::predictState()
   // normalize yaw to -pi .. pi
   if (ekfState(6) > F_PI) ekfState(6) -= 2.f*F_PI;
   if (ekfState(6) < -F_PI) ekfState(6) += 2.f*F_PI;
+
+  
+  
+  
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
