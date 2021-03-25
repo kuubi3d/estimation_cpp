@@ -4,6 +4,8 @@
 #include "Utility/StringUtils.h"
 #include "Math/Quaternion.h"
 
+#include <vector>
+
 using namespace SLR;
 
 const int QuadEstimatorEKF::QUAD_EKF_NUM_STATES;
@@ -249,8 +251,25 @@ VectorXf QuadEstimatorEKF::PredictState(VectorXf curState, float dt, V3F accel, 
   Quaternion<float> attitude = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, curState(6));
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-  // Iterate predictedState() matrix for dt *curState() and dt * acc_w.x, w.y, w.z
 
+  // Iterate predictedState() matrix for dt *curState() and dt * acc_w.x, w.y, w.z
+  
+  /* int main ()
+{
+  //creating a vector of integers
+  std::vector<int> vectorInts;  
+  std::cout<<"vectorInts has "<<vectorInts.size()<<" elements\n";
+  
+  //Changing the size of vectorInts to 6
+  vectorInts.resize(6);
+  std::cout<<"\n\nvectorInts now has "<<vectorInts.size()<<" elements\n";
+ 
+  return 0;
+}
+
+  */
+
+ 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
   return predictedState;
