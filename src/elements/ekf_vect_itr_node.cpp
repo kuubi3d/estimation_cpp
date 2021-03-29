@@ -188,7 +188,7 @@ VectorXf QuadEstimatorEKF::PredictState(VectorXf curState, float dt, V3F accel, 
   */
 /* :::: Udacity C++ Vectors and Iterators
 
-int main ()
+
 int main ()
 {
   //creating a vector of integers
